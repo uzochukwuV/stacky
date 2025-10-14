@@ -25,7 +25,6 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="react-native-demo-wallet"/>
-        <data android:scheme="xyz.tkhqlabs.passkeyapp"/>
       </intent-filter>
     </activity>
   </application>

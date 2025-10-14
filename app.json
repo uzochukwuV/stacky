@@ -11,7 +11,9 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "xyz.tkhqlabs.passkeyapp",
-      "associatedDomains": ["webcredentials:passkeyapp.tkhqlabs.xyz"],
+      "associatedDomains": [
+        "webcredentials:passkeyapp.tkhqlabs.xyz"
+      ],
       "appleTeamId": "74V7N6MW3W",
       "entitlements": {
         "com.apple.developer.applesignin": true
@@ -49,6 +51,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "576ff193-a158-48b1-b663-b0b4942d3427"
+      }
     }
   }
 }

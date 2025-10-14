@@ -8,12 +8,57 @@ export const NAV_THEME = {
     text: "hsl(240 10% 3.9%)", // foreground
   },
   dark: {
-    background: "hsl(240 10% 3.9%)", // background
-    border: "hsl(240 3.7% 15.9%)", // border
-    card: "hsl(240 10% 3.9%)", // card
-    notification: "hsl(0 72% 51%)", // destructive
-    primary: "hsl(241.31deg 100% 64.12%)", // primary
-    text: "hsl(0 0% 98%)", // foreground
+    background: "#0A0A0A", // dark background
+    border: "#2A2A2A", // dark border
+    card: "#121212", // dark card
+    notification: "#FF4D4D", // destructive
+    primary: "#7B61FF", // primary purple
+    text: "#FFFFFF", // white text
+  },
+};
+
+// Stacks Wallet Theme
+export const STACKS_THEME = {
+  colors: {
+    background: {
+      primary: "#0A0A0A",
+      secondary: "#121212",
+      card: "#1A1A1A",
+    },
+    primary: {
+      default: "#7B61FF",
+      hover: "#8A74FF",
+      pressed: "#6A52E5",
+    },
+    accent: {
+      default: "#9D4EDD",
+      secondary: "#00C2FF",
+    },
+    text: {
+      primary: "#FFFFFF",
+      secondary: "#AAAAAA",
+      tertiary: "#777777",
+    },
+    border: {
+      default: "#2A2A2A",
+      focus: "#3A3A3A",
+    },
+    success: "#4CAF50",
+    warning: "#FF9800",
+    error: "#FF4D4D",
+  },
+  spacing: {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
+  },
+  borderRadius: {
+    sm: 8,
+    md: 16,
+    lg: 20,
+    full: 9999,
   },
 };
 
