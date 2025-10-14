@@ -1,0 +1,60 @@
+[project]
+name = "stx-defi"
+description = "Decentralized Finance (DeFi) Loans using STX"
+authors = []
+telemetry = true
+cache_dir = "./.cache"
+
+[contracts.stx-defi]
+path = "contracts/stx-defi.clar"
+clarity_version = 3
+epoch = 3.0
+
+[contracts.oracle-amm]
+path = "contracts/stx-defi.clar"
+clarity_version = 3
+epoch = 3.0
+
+
+
+[[project.requirements]]
+contract_id = "SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard"
+
+
+
+
+
+[contracts.pyth-oracle-v4]
+path = "contracts/pyth-oracle-v4.clar"
+clarity_version = 3
+epoch = 3.0
+
+[contracts.pyth-storage-v4]
+path = "contracts/pyth-storage-v4.clar"
+clarity_version = 3
+epoch = 3.0
+
+[contracts.pyth-pnau-decoder-v3]
+path = "contracts/pyth-pnau-decoder-v3.clar"
+clarity_version = 3
+epoch = 3.0
+
+[contracts.wormhole-core-v4]
+path = "contracts/wormhole-core-v4.clar"
+clarity_version = 3
+epoch = 3.0
+
+[contracts.clarity-coin]
+path = "contracts/clarity-coin.clar"
+
+[contracts.mock-token-a]
+path = "contracts/clarity-coin.clar"
+
+[contracts.mock-token-b]
+path = "contracts/clarity-coin.clar"
+
+[contracts.mock-pyth-oracle]
+path = "contracts/mock-price-oracle.clar"
+
+[contracts.mock-oracle]
+path = "contracts/mock-oracle.clar"

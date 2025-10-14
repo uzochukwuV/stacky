@@ -1,0 +1,18 @@
+---
+id: 0
+name: Mainnet deployment
+network: mainnet
+stacks-node: "https://stacks-node-api.mainnet.stacks.co"
+bitcoin-node: "http://blockstack:blockstacksystem@bitcoin.blockstack.com:8332"
+plan:
+  batches:
+    - id: 0
+      transactions:
+        - contract-publish:
+            contract-name: stx-defi
+            expected-sender: SP37RXEHC9GTCKJ2Q03BD8S57PPP5R7GKE813612A
+            cost: 696968
+            path: contracts/stx-defi.clar
+            anchor-block-only: true
+            clarity-version: 3
+      epoch: "3.0"
