@@ -61,9 +61,9 @@ const AddLiquidity = () => {
         `Successfully added liquidity. Transaction ID: ${result.txid}`,
         [{ text: 'OK', onPress: () => router.back() }]
       );
-    } catch (error) {
+    } catch (error: any) {
       console.error('Add liquidity error:', error);
-      Alert.alert('Error', `Failed to add liquidity: ${error.message}`);
+      Alert.alert('Error', `Failed to add liquidity: ${error?.message || 'Unknown error'}`);
     } finally {
       setIsLoading(false);
     }
