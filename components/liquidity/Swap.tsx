@@ -109,7 +109,7 @@ const Swap = () => {
         `Successfully swapped ${amountIn} ${tokenIn.symbol} for ${amountOut} ${tokenOut.symbol}. Transaction ID: ${result.txid}`,
         [{ text: 'OK', onPress: () => router.back() }]
       );
-    } catch (error) {
+    } catch (error: any) {
       console.error('Swap error:', error);
       Alert.alert('Error', `Failed to swap: ${error.message}`);
     } finally {
@@ -128,7 +128,7 @@ const Swap = () => {
     setAmountOut('0');
   };
 
-  const renderTokenModal = (isTokenIn) => (
+  const renderTokenModal = (isTokenIn: any) => (
     <View style={[
       styles.modalContainer, 
       isTokenIn ? (showTokenInModal ? styles.visible : styles.hidden) : (showTokenOutModal ? styles.visible : styles.hidden)

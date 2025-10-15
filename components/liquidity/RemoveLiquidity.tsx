@@ -37,7 +37,7 @@ const RemoveLiquidity = () => {
   const [token0Amount, setToken0Amount] = useState('0');
   const [token1Amount, setToken1Amount] = useState('0');
   const [singleAssetMode, setSingleAssetMode] = useState(false);
-  const [selectedAsset, setSelectedAsset] = useState(null);
+  const [selectedAsset, setSelectedAsset] = useState<any>(null);
   const [slippage, setSlippage] = useState('0.5');
 
   // Calculate token amounts based on percentage
@@ -84,23 +84,24 @@ const RemoveLiquidity = () => {
         result = await removeLiquidityWithAlternative(
           selectedPool.lpTokenAddress,
           selectedPool.token0.address,
-          selectedPool.token1.address,
-          lpAmountMicros,
-          selectedAsset === selectedPool.token0.symbol ? minToken0AmountMicros : 0n,
-          selectedAsset === selectedPool.token1.symbol ? minToken1AmountMicros : 0n,
-          selectedAsset === selectedPool.token0.symbol ? selectedPool.token0.address : selectedPool.token1.address,
+          400n,
+          selectedPool.token0.address,
+          // selectedAsset === selectedPool.token0.symbol ? minToken0AmountMicros : 0n,
+          // selectedAsset === selectedPool.token1.symbol ? minToken1AmountMicros : 0n,
+          // selectedAsset === selectedPool.token0.symbol ? selectedPool.token0.address : selectedPool.token1.address,
           nonce
         );
       } else {
         // Remove liquidity with both assets
         result = await removeLiquidity(
           selectedPool.lpTokenAddress,
-          selectedPool.token0.address,
-          selectedPool.token1.address,
+          // selectedPool.token0.address,
+          5n,
+          // selectedPool.token1.address,
           lpAmountMicros,
-          minToken0AmountMicros,
-          minToken1AmountMicros,
-          nonce
+          // minToken0AmountMicros,
+          // minToken1AmountMicros,
+          // nonce
         );
       }
       
@@ -111,7 +112,7 @@ const RemoveLiquidity = () => {
         `Successfully removed ${lpAmount.toFixed(6)} LP tokens. Transaction ID: ${result.txid}`,
         [{ text: 'OK', onPress: () => router.back() }]
       );
-    } catch (error) {
+    } catch (error: any) {
       console.error('Remove liquidity error:', error);
       Alert.alert('Error', `Failed to remove liquidity: ${error.message}`);
     } finally {

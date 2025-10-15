@@ -84,3 +84,8 @@ export const PASSKEY_APP_NAME = process.env.EXPO_PUBLIC_PASSKEY_APP_NAME ?? "";
 
 export const OAUTH_TOKEN_EXPIRATION_SECONDS = "3600";
 export const GOOGLE_CLIENT_ID =process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID ?? "";
+ export const TURNKEY_API_PRIVATE_KEY = ""
+ export const TURNKEY_API_PUBLIC_KEY = ""
+ export const TURNKEY_BASE_URL = ""
+ export const TURNKEY_ORGANIZATION_ID = ""
+ export const TURNKEY_SIGNER_PUBLIC_KEY = ""
