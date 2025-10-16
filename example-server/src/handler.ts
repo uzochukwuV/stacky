@@ -44,12 +44,14 @@ export async function initOtpAuth(
   req: Request<{}, {}, InitOtpAuthParams>,
 ): Promise<InitOtpAuthResponse> {
   const { otpType, contact } = req.body;
+  console.log("initOtpAuth", otpType, contact);
   let organizationId = turnkeyConfig.defaultOrganizationId;
 
   const { organizationIds } = await turnkey.getSubOrgIds({
     filterType: otpType === "OTP_TYPE_EMAIL" ? "EMAIL" : "PHONE_NUMBER",
     filterValue: contact,
   });
+  console.log("organizationIds", organizationIds);
 
   if (organizationIds.length > 0) {
     organizationId = organizationIds[0];
@@ -62,12 +64,14 @@ export async function initOtpAuth(
     } as Request);
     organizationId = subOrgResponse.subOrganizationId;
   }
+  console.log("organizationId", organizationId);
 
   const result = await turnkey.initOtpAuth({
     organizationId,
     otpType,
     contact,
   });
+  console.log("initOtpAuth result", result);
 
   return {
     otpId: result.otpId,

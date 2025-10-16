@@ -123,6 +123,8 @@ export const AuthRelayProvider: React.FC<AuthRelayProviderProps> = ({
         otpType === "OTP_TYPE_EMAIL" ? LoginMethod.Email : LoginMethod.Phone,
     });
     try {
+      console.log("initOtpLogin", otpType, contact);
+      console.log("BACKEND_API_URL", `${BACKEND_API_URL}/auth/initOtpAuth`);
       const response = await fetch(`${BACKEND_API_URL}/auth/initOtpAuth`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -138,6 +140,7 @@ export const AuthRelayProvider: React.FC<AuthRelayProviderProps> = ({
         );
       }
     } catch (error: any) {
+      console.log("initOtpLogin error", error.message);
       dispatch({ type: "ERROR", payload: error.message });
     } finally {
       dispatch({ type: "LOADING", payload: null });
@@ -156,7 +159,10 @@ export const AuthRelayProvider: React.FC<AuthRelayProviderProps> = ({
     if (otpCode) {
       dispatch({ type: "LOADING", payload: LoginMethod.Email });
       try {
-        const targetPublicKey = await createEmbeddedKey();
+        console.log("Complete OTP")
+        const targetPublicKey = await createEmbeddedKey({
+        });
+        console.log(targetPublicKey, "targetPublicKey");
 
         const response = await fetch(`${BACKEND_API_URL}/auth/otpAuth`, {
           method: "POST",
@@ -169,12 +175,14 @@ export const AuthRelayProvider: React.FC<AuthRelayProviderProps> = ({
             invalidateExisting: false,
           }),
         }).then((res) => res.json());
+        console.log(response, "response");
 
         const credentialBundle = response.credentialBundle;
         if (credentialBundle) {
           await createSession({ bundle: credentialBundle });
         }
       } catch (error: any) {
+        console.log("completeOtpAuth error", error.message);
         dispatch({ type: "ERROR", payload: error.message });
       } finally {
         dispatch({ type: "LOADING", payload: null });
@@ -191,6 +199,7 @@ export const AuthRelayProvider: React.FC<AuthRelayProviderProps> = ({
     dispatch({ type: "LOADING", payload: LoginMethod.Passkey });
 
     try {
+      console.log("signin with asskey")
       const authenticatorParams = await createPasskey({
         authenticatorName: "End-User Passkey",
         rp: {
@@ -231,6 +240,7 @@ export const AuthRelayProvider: React.FC<AuthRelayProviderProps> = ({
         await createSessionFromEmbeddedKey({ subOrganizationId });
       }
     } catch (error: any) {
+      console.log("signin with asskey error", error.message);
       dispatch({ type: "ERROR", payload: error.message });
     } finally {
       dispatch({ type: "LOADING", payload: null });
@@ -244,6 +254,7 @@ export const AuthRelayProvider: React.FC<AuthRelayProviderProps> = ({
     dispatch({ type: "LOADING", payload: LoginMethod.Passkey });
 
     try {
+      console.log("login with passkey")
       const stamper = new PasskeyStamper({
         rpId: RP_ID,
       });
@@ -272,6 +283,7 @@ export const AuthRelayProvider: React.FC<AuthRelayProviderProps> = ({
         await createSession({ bundle: credentialBundle });
       }
     } catch (error: any) {
+      console.log("login with passkey error", error.message);
       dispatch({ type: "ERROR", payload: error.message });
     } finally {
       dispatch({ type: "LOADING", payload: null });
@@ -291,6 +303,7 @@ export const AuthRelayProvider: React.FC<AuthRelayProviderProps> = ({
   }) => {
     dispatch({ type: "LOADING", payload: LoginMethod.OAuth });
     try {
+      console.log("login with oauth")
       const response = await fetch(`${BACKEND_API_URL}/auth/oAuthLogin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -307,6 +320,7 @@ export const AuthRelayProvider: React.FC<AuthRelayProviderProps> = ({
         await createSession({ bundle: credentialBundle });
       }
     } catch (error: any) {
+      console.log("login with oauth error", error.message);
       dispatch({ type: "ERROR", payload: error.message });
     } finally {
       dispatch({ type: "LOADING", payload: null });

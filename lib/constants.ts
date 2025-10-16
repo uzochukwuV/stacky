@@ -73,7 +73,7 @@ export const DEFAULT_ETHEREUM_ACCOUNTS = [
 
 export const APP_SCHEME = process.env.EXPO_PUBLIC_APP_SCHEME ?? "";
 
-export const BACKEND_API_URL = process.env.EXPO_PUBLIC_BACKEND_API_URL ?? "";
+export const BACKEND_API_URL = "http://10.0.2.2:3000"; // process.env.EXPO_PUBLIC_BACKEND_API_URL ?? 
 
 export const TURNKEY_API_URL = process.env.EXPO_PUBLIC_TURNKEY_API_URL ?? "";
 export const TURNKEY_PARENT_ORG_ID =
