@@ -2,6 +2,7 @@ import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { STACKS_THEME } from "~/lib/constants";
 import { View } from "react-native";
+import { Header } from "~/components/header";
 
 export default function TabLayout() {
   return (
@@ -43,7 +44,11 @@ export default function TabLayout() {
         options={{
           title: "Swap",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="swap-horizontal-outline" size={size} color={color} />
+            <Ionicons
+              name="swap-horizontal-outline"
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
@@ -57,12 +62,22 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="history"
+         name="otp-auth"
+            options={{
+              headerShown: false,
+            }}
+      />
+      <Tabs.Screen
+        name="import-wallet"
         options={{
-          title: "History",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="time-outline" size={size} color={color} />
-          ),
+          title: "Import Wallet",
+        }}
+      />
+      <Tabs.Screen
+        name="dashboard"
+        options={{
+          header: () => <Header />,
+          title: "",
         }}
       />
       <Tabs.Screen

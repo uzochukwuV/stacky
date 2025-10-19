@@ -160,9 +160,16 @@ export const AuthRelayProvider: React.FC<AuthRelayProviderProps> = ({
       dispatch({ type: "LOADING", payload: LoginMethod.Email });
       try {
         console.log("Complete OTP")
-        const targetPublicKey = await createEmbeddedKey({
-        });
-        console.log(targetPublicKey, "targetPublicKey");
+        
+        // Check if keychain is available before creating embedded key
+        let targetPublicKey;
+        try {
+          targetPublicKey = await createEmbeddedKey({ isCompressed: true });
+          console.log(targetPublicKey, "targetPublicKey");
+        } catch (keychainError: any) {
+          console.log("Keychain error:", keychainError.message);
+          throw new Error("Could not save the embedded key. Please ensure the app has proper keychain access.");
+        }
 
         const response = await fetch(`${BACKEND_API_URL}/auth/otpAuth`, {
           method: "POST",
@@ -304,6 +311,8 @@ export const AuthRelayProvider: React.FC<AuthRelayProviderProps> = ({
     dispatch({ type: "LOADING", payload: LoginMethod.OAuth });
     try {
       console.log("login with oauth")
+      router.push(
+          `/dashboard`)
       const response = await fetch(`${BACKEND_API_URL}/auth/oAuthLogin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

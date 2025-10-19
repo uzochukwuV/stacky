@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "React Native Demo Wallet",
-    "slug": "react-native-demo-wallet",
+    "name": "Stacky",
+    "slug": "stacky",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "react-native-demo-wallet",
+    "scheme": "stacky",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -22,7 +22,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#000000"
       },
       "package": "xyz.tkhqlabs.passkeyapp"
     },

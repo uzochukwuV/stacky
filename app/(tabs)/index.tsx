@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { STACKS_THEME } from '~/lib/constants';
+import Dashboard from '../dashboard';
 
 // Mock data for demonstration
 const mockWalletData = {
@@ -157,6 +158,8 @@ export default function HomeScreen() {
     console.log('Token pressed:', token);
   };
 
+  // return <Dashboard />;
+
   return (
     <SafeAreaView style={{ 
       flex: 1, 
@@ -243,6 +246,7 @@ export default function HomeScreen() {
             ))}
           </View>
         </View>
+        
       </ScrollView>
     </SafeAreaView>
   );
