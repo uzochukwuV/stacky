@@ -16,7 +16,11 @@
       ],
       "appleTeamId": "74V7N6MW3W",
       "entitlements": {
-        "com.apple.developer.applesignin": true
+        "com.apple.developer.applesignin": true,
+        "aps-environment": "development"
+      },
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification"]
       }
     },
     "android": {
@@ -24,7 +28,13 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "package": "xyz.tkhqlabs.passkeyapp"
+      "package": "xyz.tkhqlabs.passkeyapp",
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE",
+        "POST_NOTIFICATIONS"
+      ],
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -47,7 +57,15 @@
           }
         }
       ],
-      "expo-apple-authentication"
+      "expo-apple-authentication",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#FF0080",
+          "sounds": ["./assets/sounds/notification.wav"]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

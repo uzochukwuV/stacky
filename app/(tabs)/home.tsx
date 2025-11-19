@@ -16,6 +16,7 @@ import { useTurnkey } from '@turnkey/sdk-react-native';
 import { FRAMER_THEME } from '~/lib/theme';
 import { useChainStore } from '~/lib/stores';
 import { ChainSwitcher } from '~/components/chain-switcher';
+import { TestnetBanner } from '~/components/testnet-banner';
 import {
   getNativeCurrencyPrice,
   formatPrice,
@@ -158,6 +159,9 @@ export default function HomeScreen() {
           </RadialGradient>
         </TouchableOpacity>
       </View>
+
+      {/* Testnet Warning Banner */}
+      <TestnetBanner chain={currentChain} />
 
       {/* Balance Card */}
       <View style={styles.balanceCard}>
