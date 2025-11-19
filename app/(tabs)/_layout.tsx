@@ -95,6 +95,34 @@ export default function TabLayout() {
         }}
       />
 
+      {/* Transactions Tab */}
+      <Tabs.Screen
+        name="transactions"
+        options={{
+          title: 'Activity',
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <View style={[styles.iconContainer, focused && styles.iconContainerActive]}>
+              {focused && (
+                <RadialGradient
+                  colors={FRAMER_THEME.colors.gradient.indigo}
+                  style={styles.iconGradient}
+                  cx="50%"
+                  cy="50%"
+                  rx="70%"
+                  ry="70%"
+                />
+              )}
+              <Ionicons
+                name={focused ? 'receipt' : 'receipt-outline'}
+                size={22}
+                color={focused ? FRAMER_THEME.colors.text.inverse : color}
+              />
+            </View>
+          ),
+        }}
+      />
+
       {/* Swap Tab - Center with special styling */}
       <Tabs.Screen
         name="swap-new"

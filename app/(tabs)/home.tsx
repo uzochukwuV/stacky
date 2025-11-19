@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import { RadialGradient } from '~/components/ui/radial-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +16,13 @@ import { useTurnkey } from '@turnkey/sdk-react-native';
 import { FRAMER_THEME } from '~/lib/theme';
 import { useChainStore } from '~/lib/stores';
 import { ChainSwitcher } from '~/components/chain-switcher';
+import {
+  getNativeCurrencyPrice,
+  formatPrice,
+  formatPriceChange,
+  type TokenPrice
+} from '~/lib/services/prices';
+import { getBalance } from '~/lib/web3-multi';
 
 const { width } = Dimensions.get('window');
 
@@ -61,13 +70,69 @@ export default function HomeScreen() {
   const { user } = useTurnkey();
   const { currentChain } = useChainStore();
 
+  const [balance, setBalance] = useState<string>('0');
+  const [price, setPrice] = useState<TokenPrice | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
   const walletAddress = user?.wallets?.[0]?.accounts?.[0]?.address;
   const truncatedAddress = walletAddress
     ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
     : '';
 
+  // Calculate total value in USD
+  const balanceNum = parseFloat(balance) || 0;
+  const totalValueUSD = price ? balanceNum * price.usd : 0;
+  const change24hUSD = price ? totalValueUSD * (price.usd_24h_change / 100) : 0;
+
+  useEffect(() => {
+    if (walletAddress) {
+      fetchBalanceAndPrice();
+    }
+  }, [walletAddress, currentChain]);
+
+  const fetchBalanceAndPrice = async (isRefresh = false) => {
+    if (!walletAddress) return;
+
+    try {
+      if (isRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
+
+      // Fetch balance and price in parallel
+      const [balanceResult, priceResult] = await Promise.all([
+        getBalance(walletAddress as `0x${string}`, currentChain),
+        getNativeCurrencyPrice(currentChain.nativeCurrency.symbol),
+      ]);
+
+      setBalance(balanceResult);
+      setPrice(priceResult);
+    } catch (error) {
+      console.error('Failed to fetch balance/price:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  const handleRefresh = () => {
+    fetchBalanceAndPrice(true);
+  };
+
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      style={styles.container}
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          tintColor={FRAMER_THEME.colors.accent.pink}
+        />
+      }
+    >
       {/* Header */}
       <View style={styles.header}>
         <View>
@@ -114,15 +179,39 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.balanceAmount}>
-          <Text style={styles.balanceValue}>$0.00</Text>
-          <View style={styles.balanceChange}>
-            <Ionicons
-              name="trending-up"
-              size={16}
-              color={FRAMER_THEME.colors.status.success}
-            />
-            <Text style={styles.balanceChangeText}>+0.00%</Text>
-          </View>
+          {loading ? (
+            <ActivityIndicator size="small" color={FRAMER_THEME.colors.accent.pink} />
+          ) : (
+            <>
+              <Text style={styles.balanceValue}>{formatPrice(totalValueUSD)}</Text>
+              {price && (
+                <View style={styles.balanceChange}>
+                  <Ionicons
+                    name={price.usd_24h_change >= 0 ? 'trending-up' : 'trending-down'}
+                    size={16}
+                    color={
+                      price.usd_24h_change >= 0
+                        ? FRAMER_THEME.colors.status.success
+                        : FRAMER_THEME.colors.status.error
+                    }
+                  />
+                  <Text
+                    style={[
+                      styles.balanceChangeText,
+                      {
+                        color:
+                          price.usd_24h_change >= 0
+                            ? FRAMER_THEME.colors.status.success
+                            : FRAMER_THEME.colors.status.error,
+                      },
+                    ]}
+                  >
+                    {formatPriceChange(price.usd_24h_change)}
+                  </Text>
+                </View>
+              )}
+            </>
+          )}
         </View>
 
         {/* Chain Info */}
