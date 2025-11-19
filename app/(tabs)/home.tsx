@@ -37,31 +37,31 @@ interface QuickAction {
 const QUICK_ACTIONS: QuickAction[] = [
   {
     id: '1',
-    title: 'Swap',
-    icon: 'swap-horizontal',
+    title: 'Send',
+    icon: 'paper-plane',
     gradient: FRAMER_THEME.colors.gradient.pink,
-    route: '/swap-new',
+    route: '/send',
   },
   {
     id: '2',
-    title: 'Portfolio',
-    icon: 'pie-chart',
+    title: 'Receive',
+    icon: 'download',
     gradient: FRAMER_THEME.colors.gradient.blue,
-    route: '/portfolio',
+    route: '/receive',
   },
   {
     id: '3',
-    title: 'Send',
-    icon: 'paper-plane',
+    title: 'Swap',
+    icon: 'swap-horizontal',
     gradient: FRAMER_THEME.colors.gradient.yellow,
-    route: '/transfer',
+    route: '/swap-new',
   },
   {
     id: '4',
-    title: 'Receive',
-    icon: 'download',
+    title: 'Portfolio',
+    icon: 'pie-chart',
     gradient: FRAMER_THEME.colors.gradient.indigo,
-    route: '/dashboard',
+    route: '/portfolio',
   },
 ];
 
