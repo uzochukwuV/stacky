@@ -255,3 +255,179 @@ export const formatSideshiftMethod = (
 ): string => {
   return `${network}.${tokenSymbol.toLowerCase()}`;
 };
+
+// ===== BULK SHIFT OPERATIONS =====
+
+export interface BulkShiftRequest {
+  depositMethod: string;
+  settleMethod: string;
+  depositAmount: string;
+  settleAddress: string;
+  refundAddress?: string;
+  affiliateId?: string;
+}
+
+export interface BulkShiftResult {
+  success: boolean;
+  order?: SideshiftOrder;
+  error?: string;
+  request: BulkShiftRequest;
+}
+
+export interface BulkOrderResponse {
+  orders: SideshiftOrder[];
+  total: number;
+}
+
+/**
+ * Fetch multiple orders in bulk (V1 API endpoint)
+ * Useful for tracking multiple shifts at once
+ */
+export const fetchBulkOrders = async (orderIds: string[]): Promise<BulkOrderResponse> => {
+  try {
+    const response = await fetch('https://sideshift.ai/api/v1/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ orderIds }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Sideshift API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return {
+      orders: data.orders || [],
+      total: data.total || 0,
+    };
+  } catch (error) {
+    console.error('[Sideshift] Failed to fetch bulk orders:', error);
+    throw error;
+  }
+};
+
+/**
+ * Create multiple swap orders in parallel
+ * This is a client-side bulk implementation - creates orders concurrently
+ */
+export const createBulkShifts = async (
+  requests: BulkShiftRequest[]
+): Promise<BulkShiftResult[]> => {
+  console.log(`[Sideshift] Creating ${requests.length} shifts in parallel...`);
+
+  const promises = requests.map(async (request): Promise<BulkShiftResult> => {
+    try {
+      // First get a quote
+      const quote = await requestQuote(
+        request.depositMethod,
+        request.settleMethod,
+        request.depositAmount,
+        request.affiliateId
+      );
+
+      // Then create the order
+      const order = await createOrder(
+        quote.id,
+        request.settleAddress,
+        request.affiliateId,
+        request.refundAddress
+      );
+
+      return {
+        success: true,
+        order,
+        request,
+      };
+    } catch (error: any) {
+      console.error('[Sideshift] Failed to create shift:', error);
+      return {
+        success: false,
+        error: error.message || 'Failed to create shift',
+        request,
+      };
+    }
+  });
+
+  const results = await Promise.allSettled(promises);
+
+  return results.map((result, index) => {
+    if (result.status === 'fulfilled') {
+      return result.value;
+    } else {
+      return {
+        success: false,
+        error: result.reason?.message || 'Unknown error',
+        request: requests[index],
+      };
+    }
+  });
+};
+
+/**
+ * Create multiple variable rate shifts in parallel
+ */
+export const createBulkVariableShifts = async (
+  requests: BulkShiftRequest[]
+): Promise<BulkShiftResult[]> => {
+  console.log(`[Sideshift] Creating ${requests.length} variable shifts in parallel...`);
+
+  const promises = requests.map(async (request): Promise<BulkShiftResult> => {
+    try {
+      const order = await createVariableOrder(
+        request.depositMethod,
+        request.settleMethod,
+        request.settleAddress,
+        request.refundAddress,
+        request.affiliateId
+      );
+
+      return {
+        success: true,
+        order,
+        request,
+      };
+    } catch (error: any) {
+      console.error('[Sideshift] Failed to create variable shift:', error);
+      return {
+        success: false,
+        error: error.message || 'Failed to create variable shift',
+        request,
+      };
+    }
+  });
+
+  const results = await Promise.allSettled(promises);
+
+  return results.map((result, index) => {
+    if (result.status === 'fulfilled') {
+      return result.value;
+    } else {
+      return {
+        success: false,
+        error: result.reason?.message || 'Unknown error',
+        request: requests[index],
+      };
+    }
+  });
+};
+
+/**
+ * Track multiple orders and get their current status
+ */
+export const trackBulkOrders = async (orderIds: string[]): Promise<Map<string, SideshiftOrder>> => {
+  try {
+    const bulkResponse = await fetchBulkOrders(orderIds);
+    const orderMap = new Map<string, SideshiftOrder>();
+
+    bulkResponse.orders.forEach((order) => {
+      orderMap.set(order.id, order);
+    });
+
+    return orderMap;
+  } catch (error) {
+    console.error('[Sideshift] Failed to track bulk orders:', error);
+    throw error;
+  }
+};

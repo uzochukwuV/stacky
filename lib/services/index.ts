@@ -25,4 +25,15 @@ export type {
   SideshiftCoin,
   SideshiftQuote,
   SideshiftOrder,
+  BulkShiftRequest,
+  BulkShiftResult,
+  BulkOrderResponse,
+} from './sideshift';
+
+// Bulk shift operations
+export {
+  fetchBulkOrders,
+  createBulkShifts,
+  createBulkVariableShifts,
+  trackBulkOrders,
 } from './sideshift';
