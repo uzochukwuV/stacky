@@ -1,94 +1,253 @@
-import { Tabs } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
-import { STACKS_THEME } from "~/lib/constants";
-import { View } from "react-native";
-import { Header } from "~/components/header";
+import { Tabs } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { View, StyleSheet, Platform } from 'react-native';
+import { FRAMER_THEME } from '~/lib/theme';
+import { RadialGradient } from '~/components/ui/radial-gradient';
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: STACKS_THEME.colors.background.primary,
-          borderTopColor: STACKS_THEME.colors.border.default,
-          height: 60,
-          paddingBottom: 8,
+          backgroundColor: FRAMER_THEME.colors.background.card,
+          borderTopWidth: 1,
+          borderTopColor: FRAMER_THEME.colors.border.light,
+          height: Platform.OS === 'ios' ? 88 : 64,
+          paddingBottom: Platform.OS === 'ios' ? 24 : 8,
+          paddingTop: 8,
+          ...FRAMER_THEME.shadows.xl,
+          elevation: 0,
         },
-        tabBarActiveTintColor: STACKS_THEME.colors.primary.default,
-        tabBarInactiveTintColor: STACKS_THEME.colors.text.tertiary,
+        tabBarActiveTintColor: FRAMER_THEME.colors.text.primary,
+        tabBarInactiveTintColor: FRAMER_THEME.colors.text.tertiary,
         tabBarLabelStyle: {
-          fontFamily: "Inter_500Medium",
-          fontSize: 12,
+          fontSize: FRAMER_THEME.typography.fontSize.xs,
+          fontWeight: FRAMER_THEME.typography.fontWeight.semibold,
+          marginTop: 4,
         },
         headerStyle: {
-          backgroundColor: STACKS_THEME.colors.background.primary,
+          backgroundColor: FRAMER_THEME.colors.background.primary,
+          elevation: 0,
+          shadowOpacity: 0,
         },
         headerTitleStyle: {
-          color: STACKS_THEME.colors.text.primary,
-          fontFamily: "Inter_600SemiBold",
+          color: FRAMER_THEME.colors.text.primary,
+          fontSize: FRAMER_THEME.typography.fontSize.xl,
+          fontWeight: FRAMER_THEME.typography.fontWeight.bold,
         },
         headerShadowVisible: false,
+        tabBarHideOnKeyboard: true,
       }}
     >
+      {/* Home Tab */}
+      <Tabs.Screen
+        name="home"
+        options={{
+          title: 'Home',
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <View style={[styles.iconContainer, focused && styles.iconContainerActive]}>
+              {focused && (
+                <RadialGradient
+                  colors={FRAMER_THEME.colors.gradient.pink}
+                  style={styles.iconGradient}
+                  cx="50%"
+                  cy="50%"
+                  rx="70%"
+                  ry="70%"
+                />
+              )}
+              <Ionicons
+                name={focused ? 'home' : 'home-outline'}
+                size={22}
+                color={focused ? FRAMER_THEME.colors.text.inverse : color}
+              />
+            </View>
+          ),
+        }}
+      />
+
+      {/* Portfolio Tab */}
+      <Tabs.Screen
+        name="portfolio"
+        options={{
+          title: 'Portfolio',
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <View style={[styles.iconContainer, focused && styles.iconContainerActive]}>
+              {focused && (
+                <RadialGradient
+                  colors={FRAMER_THEME.colors.gradient.blue}
+                  style={styles.iconGradient}
+                  cx="50%"
+                  cy="50%"
+                  rx="70%"
+                  ry="70%"
+                />
+              )}
+              <Ionicons
+                name={focused ? 'pie-chart' : 'pie-chart-outline'}
+                size={22}
+                color={focused ? FRAMER_THEME.colors.text.inverse : color}
+              />
+            </View>
+          ),
+        }}
+      />
+
+      {/* Swap Tab - Center with special styling */}
+      <Tabs.Screen
+        name="swap-new"
+        options={{
+          title: 'Swap',
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <View style={styles.centerIconContainer}>
+              <RadialGradient
+                colors={focused ? FRAMER_THEME.colors.gradient.pink : FRAMER_THEME.colors.gradient.yellow}
+                style={styles.centerIconGradient}
+                cx="50%"
+                cy="50%"
+                rx="70%"
+                ry="70%"
+              >
+                <Ionicons
+                  name="swap-horizontal"
+                  size={28}
+                  color={FRAMER_THEME.colors.text.inverse}
+                />
+              </RadialGradient>
+            </View>
+          ),
+        }}
+      />
+
+      {/* DeFi Tab */}
+      <Tabs.Screen
+        name="defi"
+        options={{
+          title: 'DeFi',
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <View style={[styles.iconContainer, focused && styles.iconContainerActive]}>
+              {focused && (
+                <RadialGradient
+                  colors={FRAMER_THEME.colors.gradient.indigo}
+                  style={styles.iconGradient}
+                  cx="50%"
+                  cy="50%"
+                  rx="70%"
+                  ry="70%"
+                />
+              )}
+              <Ionicons
+                name={focused ? 'flash' : 'flash-outline'}
+                size={22}
+                color={focused ? FRAMER_THEME.colors.text.inverse : color}
+              />
+            </View>
+          ),
+        }}
+      />
+
+      {/* Settings Tab */}
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <View style={[styles.iconContainer, focused && styles.iconContainerActive]}>
+              {focused && (
+                <RadialGradient
+                  colors={FRAMER_THEME.colors.gradient.yellow}
+                  style={styles.iconGradient}
+                  cx="50%"
+                  cy="50%"
+                  rx="70%"
+                  ry="70%"
+                />
+              )}
+              <Ionicons
+                name={focused ? 'settings' : 'settings-outline'}
+                size={22}
+                color={focused ? FRAMER_THEME.colors.text.inverse : color}
+              />
+            </View>
+          ),
+        }}
+      />
+
+      {/* Hide these screens from tab bar */}
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" size={size} color={color} />
-          ),
+          href: null,
         }}
       />
       <Tabs.Screen
         name="swap"
         options={{
-          title: "Swap",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="swap-horizontal-outline"
-              size={size}
-              color={color}
-            />
-          ),
+          href: null,
         }}
       />
       <Tabs.Screen
         name="liquidity"
         options={{
-          title: "Liquidity",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="water-outline" size={size} color={color} />
-          ),
+          href: null,
         }}
       />
       <Tabs.Screen
-         name="otp-auth"
-            options={{
-              headerShown: false,
-            }}
+        name="otp-auth"
+        options={{
+          href: null,
+        }}
       />
       <Tabs.Screen
         name="import-wallet"
         options={{
-          title: "Import Wallet",
+          href: null,
         }}
       />
       <Tabs.Screen
         name="dashboard"
         options={{
-          header: () => <Header />,
-          title: "",
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: "Settings",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" size={size} color={color} />
-          ),
+          href: null,
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  iconContainer: {
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: FRAMER_THEME.borderRadius.md,
+    position: 'relative',
+  },
+  iconContainerActive: {
+    ...FRAMER_THEME.shadows.md,
+  },
+  iconGradient: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    borderRadius: FRAMER_THEME.borderRadius.md,
+  },
+  centerIconContainer: {
+    width: 56,
+    height: 56,
+    marginBottom: 20,
+  },
+  centerIconGradient: {
+    width: '100%',
+    height: '100%',
+    borderRadius: FRAMER_THEME.borderRadius.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...FRAMER_THEME.shadows.xl,
+  },
+});
