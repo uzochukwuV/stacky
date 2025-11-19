@@ -150,11 +150,11 @@ export default function TabLayout() {
         }}
       />
 
-      {/* DeFi Tab */}
+      {/* Positions Tab */}
       <Tabs.Screen
-        name="defi"
+        name="positions"
         options={{
-          title: 'DeFi',
+          title: 'Positions',
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconContainer, focused && styles.iconContainerActive]}>
@@ -169,12 +169,20 @@ export default function TabLayout() {
                 />
               )}
               <Ionicons
-                name={focused ? 'flash' : 'flash-outline'}
+                name={focused ? 'layers' : 'layers-outline'}
                 size={22}
                 color={focused ? FRAMER_THEME.colors.text.inverse : color}
               />
             </View>
           ),
+        }}
+      />
+
+      {/* Hide DeFi screen from tabs (accessible from home) */}
+      <Tabs.Screen
+        name="defi"
+        options={{
+          href: null,
         }}
       />
 
